@@ -1,0 +1,34 @@
+## Setting Your Working Directory ##
+
+getwd()
+setwd("C:/Users/Syed Zainul/Documents/R")
+dir
+
+## Classes of Objects ##
+# Character, Numeric, Integer, Complex, Logical
+
+x <- vector("numeric", length = 10)
+class(x)
+
+# Explicit Coercion
+as.logical(x)
+as.character(x)
+
+## Attributes of Objects ##
+# Names, dimnames. Dimensions. Class. Length
+
+## Matrices ##
+
+m <- matrix(1:6, nrow = 2, ncol = 3)
+dim(m)
+attributes(m)
+
+m <- 1:10
+m
+dim(m) <- c(2,5)
+m
+
+x <- 1:3
+y <- 10:12
+cbind(x, y)
+rbind(x, y)
