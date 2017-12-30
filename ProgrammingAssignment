@@ -1,0 +1,68 @@
+## Part 1
+
+pollutantmean <- function(directory, pollutant, id = 1:332) {
+    files <- list.files(directory, full.names = TRUE) 
+    
+    data <- data.frame()
+    
+    for (i in id) {
+        data <- rbind(data, read.csv(files[i]))
+    }
+    
+    mean(data[, pollutant], na.rm = TRUE)
+}
+
+specdata <- "/Users/Syed Zainul/Documents/R/Coursera/specdata/"
+pollutantmean("specdata", "nitrate")
+
+## Part 2
+
+complete <- function (directory, id = 1:332) {
+    files <- list.files(directory, full.names = TRUE)
+    
+    data <- data.frame()
+    
+    for(i in id) {
+        moni <- read.csv(files_full[i])
+        nobs <- sum(complete.cases(moni))
+        tmp <- data.frame (i, nobs)
+        data <- rbind(data, tmp)
+    }
+    colnames(data) <- c("id", "nobs")
+    data
+}
+
+complete("specdata", 1)
+
+set.seed(42)
+cc <- complete("specdata", 332:1)
+use <- sample(332, 10)
+print(cc[use, "nobs"])
+
+## Part 3
+
+corr <- function(directory, threshold = 0) {
+    files_full <- list.files(directory, full.names = TRUE)
+    dat <- vector(mode = "numeric", length = 0)
+    
+    for (i in 1:length(files_full)) {
+        moni_i <- read.csv(files_full[i])
+        csum <- sum((!is.na(moni_i$sulfate)) & (!is.na(moni_i$nitrate)))
+        if (csum > threshold) {
+            tmp <- moni_i[which(!is.na(moni_i$sulfate)), ]
+            submoni_i <- tmp[which(!is.na(tmp$nitrate)), ]
+            dat <- c(dat, cor(submoni_i$sulfate, submoni_i$nitrate))
+        }
+    }
+    
+    dat
+}
+
+cr <- corr("specdata", 150)
+head(cr)
+
+cr <- corr("specdata", 2000)                
+n <- length(cr)                
+cr <- corr("specdata", 1000)                
+cr <- sort(cr)
+print(c(n, round(cr, 4)))
